@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/api/*": ["./api/*"],
+      "@/components/*": ["./components/*"],
+      "@/connectors/*": ["./connectors/*"],
+      "@/context/*": ["./context/*"],
+      "@/hooks/*": ["./hooks/*"],
+      "@/models/*": ["./models/*"],
+      "@/services/*": ["./services/*"],
+      "@/styles/*": ["./styles/*"],
+      "@/utils/*": ["./utils/*"],
+      "@/constants/*": ["./constants/*"],
+      "@/redux/*": ["./redux/*"]
+      // "@/public/*": ["./public/*"]
+    },
+    "typeRoots": ["node_modules/@types", "node_modules"],
+    "types": ["node", "react", "react-dom"],
+    "outDir": "dist"
+  },
+  "include": [
+    "next-env.d.ts",
+    "utils/svg.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src",
+    "node_modules/**/*.d.ts",
+    "node_modules/@types/**/*.d.ts"
+  ],
+  "exclude": ["node_modules"]
+}

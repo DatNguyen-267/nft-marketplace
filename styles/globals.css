@@ -1,0 +1,39 @@
+html 
+body {
+  padding: 0;
+  margin: 0;
+  background-color: #121212;
+
+  /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */
+}
+
+html {
+  /* font-size: 62.5%rem; */
+  box-sizing: border-box;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #4c576d;
+  border-radius: 6px;
+}
+/* ::placeholder { 
+  color: red;
+  opacity: 1; 
+}
+
+:-ms-input-placeholder { 
+  color: red;
+}
+
+::-ms-input-placeholder { 
+  color: red;
+} */
