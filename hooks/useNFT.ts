@@ -1,9 +1,6 @@
-import { MARKETPLACE_ABI, NFT_ABI } from '@/constants/abi'
-import { toWei } from '@/utils/convert'
+import { NFT_ABI } from '@/constants/abi'
 import { useWeb3React } from '@web3-react/core'
-import { NftApi } from 'apis'
 import { ethers } from 'ethers'
-import _ from 'lodash'
 import { MARKETPLACE_ADDRESS, NFT_ADDRESS } from '../constants'
 import { ContractService } from '../services'
 import useConnector from './connector'
@@ -63,7 +60,7 @@ const useNFT = () => {
         while (true) {
           try {
             const token = await tokenContract.ownerOf(tokenId)
-            listTokenId.push(tokenId)
+            if (token.toLowerCase() === account.toLowerCase()) listTokenId.push(tokenId)
             tokenId++
           } catch (error) {
             break
@@ -88,8 +85,20 @@ const useNFT = () => {
       throw error
     }
   }
-
-  return { mintNFT, approve, getYourTokens, getTokenUri }
+  async function getOwner(tokenId: number) {
+    try {
+      const tokenContract = new ethers.Contract(
+        NFT_ADDRESS,
+        NFT_ABI,
+        ContractService.getProvider()
+      )
+      const addressOwner = tokenContract.ownerOf(tokenId)
+      return addressOwner
+    } catch (error) {
+      return undefined
+    }
+  }
+  return { mintNFT, approve, getYourTokens, getTokenUri, getOwner }
 }
 
 export default useNFT

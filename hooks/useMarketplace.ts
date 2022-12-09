@@ -1,7 +1,7 @@
 import { toWei } from '@/utils/convert'
 import { useWeb3React } from '@web3-react/core'
 import { ethers } from 'ethers'
-import { MARKETPLACE_ABI, MARKETPLACE_ADDRESS, NFT_ADDRESS } from '../constants'
+import { MARKETPLACE_ABI, MARKETPLACE_ADDRESS, NFT_ABI, NFT_ADDRESS } from '../constants'
 import { ContractService } from '../services'
 import useConnector from './connector'
 import useNFT from './useNFT'
@@ -26,11 +26,17 @@ const useMarketplace = () => {
           MARKETPLACE_ABI,
           provider.getSigner()
         )
+        const tokenContract = new ethers.Contract(
+          NFT_ADDRESS,
+          NFT_ABI,
+          provider.getSigner()
+        )
         try {
           console.log('approve')
           const recieptApprove: any = await approve(MARKETPLACE_ADDRESS, tokenId)
           console.log(recieptApprove)
         } catch (error) {
+          console.log('approve error, :', error)
           throw error
         }
 

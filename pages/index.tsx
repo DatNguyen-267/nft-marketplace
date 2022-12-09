@@ -7,14 +7,13 @@ import useNFT from '@/hooks/useNFT'
 import { Tag, TAGS } from '@/models/nft'
 import { hexToNumber } from '@/utils/convert'
 import { Icon } from '@/utils/images'
-import { Box, Container, Grid, Stack, Typography, Button } from '@mui/material'
+import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material'
 import { useWeb3React } from '@web3-react/core'
 import { NftApi } from 'apis'
-import axiosClient from 'apis/axiosClient'
 import _ from 'lodash'
-import { useEffect, useState } from 'react'
-import { MARKETPLACE_ABI, MARKETPLACE_ADDRESS, NFT_ADDRESS } from '../constants'
-import { ContractService, NftService } from '../services'
+import { useContext, useEffect, useState } from 'react'
+import { NFT_ADDRESS } from '../constants'
+import { PageBlockContext } from '../context/page-block-context'
 import { NextPageWithLayout } from './_app'
 const Loading2 = Icon.Loading2
 export type HomeTag = Tag | 'All'
@@ -46,6 +45,9 @@ const Home: NextPageWithLayout = () => {
   const { getTokenUri } = useNFT()
 
   const { viewAsksByCollection, buyTokenUsingWBNB } = useMarketplace()
+
+  const pageBlockContext = useContext(PageBlockContext)
+
   useEffect(() => {
     getsaleTokens()
   }, [])
@@ -103,9 +105,26 @@ const Home: NextPageWithLayout = () => {
       }
     } catch (error) {}
   }
-  const handleBuy = async (tokenId?: number, price?: string) => {
+  // const handleBuy = async (tokenId?: number, price?: string) => {
+  //   if (tokenId && price) {
+  //     try {
+  //       await NftService.buyItem(tokenId, price, MARKETPLACE_ADDRESS)
+  //       toast.success('Buy item success')
+  //     } catch (error) {
+  //       console.log('buy fail', error)
+  //       toast.error('Buy item fail!')
+  //     }
+  //   }
+  // }
+  const handleBuy = async (tokenId?: string, price?: string) => {
     if (tokenId && price) {
-      await NftService.buyItem(tokenId, price, MARKETPLACE_ADDRESS)
+      try {
+        if (tokenId && price) {
+          await buyTokenUsingWBNB(NFT_ADDRESS, tokenId, price)
+        }
+      } catch (error) {
+        console.log('buy fail', error)
+      }
     }
   }
   return (
@@ -164,15 +183,15 @@ const Home: NextPageWithLayout = () => {
                             padding: 2,
                           }}
                           onClick={async () => {
-                            const tokenId = _.get(item, 'tokenId')
-                            const price = hexToNumber(
-                              _.get(item, 'askInfo.price._hex')
-                            )?.toString()
-                            console.log(tokenId)
-                            console.log(price)
-                            if (tokenId && price) {
-                              await buyTokenUsingWBNB(NFT_ADDRESS, tokenId, price)
-                            }
+                            pageBlockContext?.openPageBlock({
+                              func: handleBuy(
+                                _.get(item, 'tokenId'),
+                                hexToNumber(_.get(item, 'askInfo.price._hex'))?.toString()
+                              ),
+                              text: 'Buying...',
+                              success: 'Buy item success',
+                              error: 'Buy item fail!',
+                            })
                           }}
                         >
                           Buy Item
