@@ -41,12 +41,6 @@ const navbar = [
     src: '/',
   },
   {
-    name: 'Creator',
-    list: [],
-    type: 'link',
-    src: '/creator',
-  },
-  {
     name: 'Create',
     list: [],
     type: 'link',
@@ -269,7 +263,7 @@ export default function Header(props: IHeaderProps) {
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
                 <MenuItem sx={{ padding: 0 }}>
-                  <Link href={`/creator?id=${account}`} passHref>
+                  <Link href={`/creator/${account}`} passHref>
                     <Stack
                       direction='row'
                       alignItems='center'

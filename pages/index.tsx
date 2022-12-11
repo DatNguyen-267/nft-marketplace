@@ -7,10 +7,14 @@ import useNFT from '@/hooks/useNFT'
 import { Tag, TAGS } from '@/models/nft'
 import { hexToNumber } from '@/utils/convert'
 import { Icon } from '@/utils/images'
+import { ColorTheme } from '@/utils/theme'
 import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material'
+import Avatar from '@mui/material/Avatar'
+import { deepOrange, deepPurple } from '@mui/material/colors'
 import { useWeb3React } from '@web3-react/core'
 import { NftApi } from 'apis'
 import _ from 'lodash'
+import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { NFT_ADDRESS } from '../constants'
 import { PageBlockContext } from '../context/page-block-context'
@@ -40,7 +44,7 @@ interface SaleItem {
 }
 const Home: NextPageWithLayout = () => {
   const { isActive, provider, chainId, account } = useWeb3React()
-
+  const router = useRouter()
   const [saleTokens, setSaleTokens] = useState<SaleItem[]>()
   const { getTokenUri } = useNFT()
 
@@ -119,11 +123,15 @@ const Home: NextPageWithLayout = () => {
   const handleBuy = async (tokenId?: string, price?: string) => {
     if (tokenId && price) {
       try {
-        if (tokenId && price) {
-          await buyTokenUsingWBNB(NFT_ADDRESS, tokenId, price)
-        }
+        console.log('buy ittem')
+        console.log(tokenId)
+        console.log(price)
+        await buyTokenUsingWBNB(NFT_ADDRESS, tokenId, price)
+        setSaleTokens(undefined)
+        getsaleTokens()
       } catch (error) {
-        console.log('buy fail', error)
+        console.log(error)
+        throw error
       }
     }
   }
@@ -142,8 +150,8 @@ const Home: NextPageWithLayout = () => {
             {saleTokens &&
               saleTokens.length > 0 &&
               saleTokens.map((item: any, index: number) => (
-                <Grid item xs={4} key={index}>
-                  <Box>
+                <Grid item xs={3} key={index}>
+                  <Box sx={{ height: '100%' }}>
                     <NftWrapper
                       header={<PublicNftHeader status={'Fixed Price'} />}
                       footer={
@@ -160,19 +168,34 @@ const Home: NextPageWithLayout = () => {
                       isOwner={false}
                       srcImg={_.get(item, `metadata.image`)}
                     >
-                      <Box mt={1}>
-                        <Typography variant='h3'>Seller By:</Typography>
-                        <Typography
-                          mt={1}
-                          variant='body1'
-                          component='span'
-                          color='info'
-                          sx={{
-                            wordWrap: 'break-word',
-                          }}
-                        >
-                          {_.get(item, 'askInfo.seller')}
+                      <Box>
+                        <Typography variant='subtitle1' mb={1 / 2}>
+                          Seller By:
                         </Typography>
+                        <Stack
+                          direction='row'
+                          justifyContent='center'
+                          alignItems='center'
+                          spacing={1}
+                        >
+                          <Avatar
+                            sx={{ bgcolor: deepOrange[500], cursor: 'pointer' }}
+                            onClick={() =>
+                              router.push(`/creator/${_.get(item, 'askInfo.seller')}`)
+                            }
+                          >
+                            A
+                          </Avatar>
+                          <Typography
+                            mt={1}
+                            variant='body2'
+                            sx={{
+                              wordBreak: 'break-all',
+                            }}
+                          >
+                            {_.get(item, 'askInfo.seller')}
+                          </Typography>
+                        </Stack>
                       </Box>{' '}
                       {_.get(item, 'askInfo.seller') !== account ? (
                         <Button
@@ -185,7 +208,7 @@ const Home: NextPageWithLayout = () => {
                           onClick={async () => {
                             pageBlockContext?.openPageBlock({
                               func: handleBuy(
-                                _.get(item, 'tokenId'),
+                                _.get(item, 'tokenId').toString(),
                                 hexToNumber(_.get(item, 'askInfo.price._hex'))?.toString()
                               ),
                               text: 'Buying...',
@@ -198,12 +221,13 @@ const Home: NextPageWithLayout = () => {
                         </Button>
                       ) : (
                         <Button
-                          variant='contained'
+                          variant='outlined'
                           disabled={true}
                           sx={{
                             opacity: 0.5,
                             marginTop: 2,
                             padding: 2,
+                            border: '1px solid #A5ABB6 !important',
                           }}
                         >
                           {' '}

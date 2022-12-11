@@ -2,6 +2,7 @@ import { NftData } from '@/models/nft'
 import { StyledSvgIcon } from '@/styles/custome-mui'
 import { toEther } from '@/utils/convert'
 import { ImagesCreatorPage } from '@/utils/images'
+import { ColorTheme } from '@/utils/theme'
 import { Box, Typography } from '@mui/material'
 import Link from 'next/link'
 import NftName from '../name'
@@ -26,12 +27,13 @@ const PublicNftFooter = ({ name, tokenId, tokenUri, description, price }: Props)
             <StyledSvgIcon
               component={ImagesCreatorPage.GroupLine}
               sx={{
-                width: '24px',
-                height: '24px',
+                width: '20px',
+                height: '20px',
+                color: ColorTheme.primary,
               }}
             ></StyledSvgIcon>
-            <Typography variant='h2' component='span'>
-              Price:
+            <Typography variant='h3' component='span'>
+              {/* Price: */}
             </Typography>{' '}
             <Typography variant='h2' component='span' color='primary'>
               {price ? toEther(price) : ''}
@@ -39,7 +41,7 @@ const PublicNftFooter = ({ name, tokenId, tokenUri, description, price }: Props)
           </Box>
         )}
         <Box mt={1}>
-          <Typography variant='h3'>Description:</Typography>
+          <Typography variant='subtitle1'>Description</Typography>
           <Typography
             mt={1}
             variant='body1'
@@ -53,7 +55,7 @@ const PublicNftFooter = ({ name, tokenId, tokenUri, description, price }: Props)
           </Typography>
         </Box>
         <Box mt={1}>
-          <Typography variant='h3'>TokenUri:</Typography>
+          <Typography variant='subtitle1'>TokenUri</Typography>
           <Typography
             mt={1}
             variant='body1'

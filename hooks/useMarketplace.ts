@@ -58,6 +58,10 @@ const useMarketplace = () => {
     tokenId: string,
     price: string
   ) {
+    console.log(provider)
+    console.log(account)
+    console.log(tokenId)
+    console.log(price)
     if (provider && account && tokenId && price) {
       try {
         const marketContract = new ethers.Contract(

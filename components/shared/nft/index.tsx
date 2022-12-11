@@ -32,7 +32,8 @@ const NftWrapper = ({
   children,
 }: Props) => {
   return (
-    <Box
+    <Stack
+      justifyContent='space-between'
       sx={{
         border: '1px solid',
         borderRadius: '6px',
@@ -44,7 +45,6 @@ const NftWrapper = ({
       <Stack>
         {/* Header */}
 
-        {header}
         {/* Image */}
         <Box
           component='div'
@@ -73,7 +73,7 @@ const NftWrapper = ({
               left: 0,
               width: '100%',
               height: '100%',
-              objectFit: 'contain',
+              objectFit: 'cover',
               objectPosition: 'center',
             }}
             effect='blur'
@@ -88,15 +88,15 @@ const NftWrapper = ({
         >
           {footer}
         </Box>
-        <Stack
-          sx={{
-            margin: '10px 8px 0 8px',
-          }}
-        >
-          {children}
-        </Stack>
       </Stack>
-    </Box>
+      <Stack
+        sx={{
+          margin: '10px 8px 0 8px',
+        }}
+      >
+        {children}
+      </Stack>
+    </Stack>
   )
 }
 

@@ -14,7 +14,8 @@ const NftName = ({ tokenId, name, gateway }: Props) => {
   return (
     <Box>
       <Typography
-        variant='h1'
+        variant='h2'
+        color='error'
         sx={{
           marginBottom: '4px',
           cursor: 'pointer',
@@ -30,7 +31,7 @@ const NftName = ({ tokenId, name, gateway }: Props) => {
       >
         {name}
       </Typography>
-      <Typography variant='h1' component='span' color='primary'>
+      <Typography variant='h2' component='span' color='error'>
         {' #'}
         {tokenId}
       </Typography>
