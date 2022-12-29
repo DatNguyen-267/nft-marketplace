@@ -46,8 +46,8 @@ const useNFT = () => {
       }
     } else throw new Error('Please connect wallet')
   }
-  async function getYourTokens() {
-    if (account) {
+  async function getYourTokens(creatorAddress?: string) {
+    if (creatorAddress) {
       try {
         const tokenContract = new ethers.Contract(
           NFT_ADDRESS,
@@ -60,7 +60,8 @@ const useNFT = () => {
         while (true) {
           try {
             const token = await tokenContract.ownerOf(tokenId)
-            if (token.toLowerCase() === account.toLowerCase()) listTokenId.push(tokenId)
+            if (token.toLowerCase() === creatorAddress.toLowerCase())
+              listTokenId.push(tokenId)
             tokenId++
           } catch (error) {
             break

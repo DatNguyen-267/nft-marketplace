@@ -11,6 +11,7 @@ import { Box, Button, Container, Grid, Stack, Typography } from '@mui/material'
 import { useWeb3React } from '@web3-react/core'
 import { NftApi } from 'apis'
 import _ from 'lodash'
+import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import Loading from '../components/shared/modal/loading'
 import { NFT_ADDRESS } from '../constants'
@@ -41,7 +42,7 @@ interface SaleItem {
 }
 const Home: NextPageWithLayout = () => {
   const { isActive, provider, chainId, account } = useWeb3React()
-
+  const router = useRouter()
   const [saleTokens, setSaleTokens] = useState<any>()
   const { getTokenUri } = useNFT()
 
@@ -136,13 +137,17 @@ const Home: NextPageWithLayout = () => {
   const handleBuy = async (tokenId?: string, price?: string) => {
     if (tokenId && price) {
       try {
-        if (tokenId && price) {
-          await buyTokenUsingWBNB(NFT_ADDRESS, tokenId, price)
-          setSaleTokens(undefined)
-          getsaleTokens()
-        }
+        console.log('buy ittem')
+        console.log(tokenId)
+        console.log(price)
+        await buyTokenUsingWBNB(NFT_ADDRESS, tokenId, price)
+        setSaleTokens(undefined)
+        getsaleTokens()
+        setSaleTokens(undefined)
+        getsaleTokens()
       } catch (error) {
-        console.log('buy fail', error)
+        console.log(error)
+        throw error
       }
     }
   }
