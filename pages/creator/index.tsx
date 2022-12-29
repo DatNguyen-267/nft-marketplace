@@ -6,13 +6,14 @@ import PublicNftHeader from '@/components/shared/nft/header/public'
 import { MARKETPLACE_ADDRESS, NFT_ADDRESS } from '@/constants/address'
 import useMarketplace from '@/hooks/useMarketplace'
 import useNFT from '@/hooks/useNFT'
-import { Button, Container, Grid, Typography } from '@mui/material'
+import { Button, Container, Grid, Stack, Typography } from '@mui/material'
 import { useWeb3React } from '@web3-react/core'
 import { NftApi } from 'apis'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
+import { PageBlockContext } from '../../context/page-block-context'
 
 const CreatorPage = () => {
   // State
@@ -22,6 +23,7 @@ const CreatorPage = () => {
 
   const { getYourTokens, getTokenUri, getOwner } = useNFT()
   const { createAskOrder } = useMarketplace()
+  const pageBlockContext = useContext(PageBlockContext)
 
   useEffect(() => {
     console.log(yourTokens)
@@ -64,33 +66,56 @@ const CreatorPage = () => {
           })
         )
         // Lấy token Uri
-
-        listTokenUri = await Promise.all(
+        console.log(listTokenId)
+        let res = await Promise.all(
           listTokenId.map(async (item, index) => {
-            const tokenUri: any = await getTokenUri(item)
-            listYourToken[index] = {
-              ...listYourToken[index],
-              tokenUri,
+            if (item !== undefined) {
+              const tokenUri: any = await getTokenUri(item)
+              listYourToken[index] = {
+                ...listYourToken[index],
+                tokenUri,
+              }
+              const metadata = await NftApi.getMetadata(tokenUri)
+              listYourToken[index] = {
+                ...listYourToken[index],
+                metadata: { ...metadata },
+              }
+              setYourTokens([...listYourToken])
+              return listYourToken[index]
+            } else {
+              setYourTokens([...listYourToken])
+              return listYourToken[index]
             }
-            return tokenUri
           })
         )
-        setYourTokens([...listYourToken])
-        // Lấy metadata
-        listTokenMetadata = await Promise.all(
-          listTokenUri.map(async (item, index) => {
-            const metadata = await NftApi.getMetadata(item)
-            listYourToken[index] = {
-              ...listYourToken[index],
-              metadata: { ...metadata },
-            }
+        console.log(res)
+        if (res) setYourTokens([...res])
+        // listTokenUri = await Promise.all(
+        //   listTokenId.map(async (item, index) => {
+        //     const tokenUri: any = await getTokenUri(item)
+        //     listYourToken[index] = {
+        //       ...listYourToken[index],
+        //       tokenUri,
+        //     }
+        //     return tokenUri
+        //   })
+        // )
+        // setYourTokens([...listYourToken])
+        // // Lấy metadata
+        // listTokenMetadata = await Promise.all(
+        //   listTokenUri.map(async (item, index) => {
+        //     const metadata = await NftApi.getMetadata(item)
+        //     listYourToken[index] = {
+        //       ...listYourToken[index],
+        //       metadata: { ...metadata },
+        //     }
 
-            return metadata
-          })
-        )
-        setYourTokens([...listYourToken])
+        //     return metadata
+        //   })
+        // )
+        // setYourTokens([...listYourToken])
       }
-      setYourTokens(() => [...listYourToken])
+      // setYourTokens(() => [...listYourToken])
     } catch (error) {
       setYourTokens([])
     }
@@ -98,6 +123,7 @@ const CreatorPage = () => {
   const handleSell = async (tokenId: string) => {
     try {
       const receitpSell = await createAskOrder(NFT_ADDRESS, tokenId, '0.002')
+      setYourTokens(undefined)
       getData()
       console.log(receitpSell)
     } catch (error) {}
@@ -105,7 +131,12 @@ const CreatorPage = () => {
   return (
     <>
       <Container maxWidth='lg'>
-        <Grid container columns={12} spacing='30px'>
+        <Stack direction='row' spacing={2}>
+          <Typography variant='h1' color='primary.main'>
+            Your NFTs
+          </Typography>
+        </Stack>
+        <Grid container columns={12} spacing='30px' mt={2}>
           {!yourTokens && <Loading></Loading>}
           {yourTokens && yourTokens.length === 0 && (
             <Grid item>
@@ -137,7 +168,12 @@ const CreatorPage = () => {
                         }}
                         onClick={() => {
                           try {
-                            handleSell(_.get(item, 'tokenId'))
+                            pageBlockContext?.openPageBlock({
+                              func: handleSell(_.get(item, 'tokenId')),
+                              text: 'Selling...',
+                              success: 'Sell NFT success',
+                              error: 'Sell NFT error!',
+                            })
                           } catch (error) {
                             toast.error('Sell item fail!')
                           }

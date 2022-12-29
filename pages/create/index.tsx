@@ -19,6 +19,7 @@ import {
 
 import MySwitch from '@/components/shared/input/my-switch'
 import MyTextField from '@/components/shared/input/my-text-field'
+import { PRIMARY_CURRENCY_NAME, STORAGE_API_KEY, SUPPORT_IMG } from '@/constants/index'
 import { FormCreateNFT } from '@/models/form'
 import CheckBoxIcon from '@mui/icons-material/CheckBox'
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank'
@@ -32,7 +33,6 @@ import { memo, useCallback, useContext, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { NftService } from 'services'
 import * as Yup from 'yup'
-import { PRIMARY_CURRENCY_NAME, STORAGE_API_KEY, SUPPORT_IMG } from '@/constants/index'
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />
 const checkedIcon = <CheckBoxIcon fontSize='small' />
@@ -105,20 +105,19 @@ let validationSchema = Yup.object().shape({
   }),
   price: Yup.string().when(['putOnMarket', 'typePutOnMarket'], {
     is: (putOnMarket: boolean, typePutOnMarket: string) => putOnMarket,
-    then: Yup.string()
-      .required('Price is required')
-      .test('price', 'Prire must be a number', (value: any) => {
-        if (value) return /[0-9]+(\.[0-9]*)?$/.test(value) && !!parseFloat(value)
-        else return false
-      })
-      .test('price', 'Prire must be a positive number', (value: any) => {
-        if (value) return /^[0-9]+(\.[0-9]*)?$/.test(value)
-        else return false
-      })
-      .test('price', 'Just allow decimal 18', (value: any) => {
-        if (value) return /^\d*(\.[0-9]{0,18})?$/.test(value)
-        else return false
-      }),
+    then: Yup.string(),
+    // .test('price', 'Prire must be a number', (value: any) => {
+    //   if (value) return /[0-9]+(\.[0-9]*)?$/.test(value) && !!parseFloat(value)
+    //   else return false
+    // })
+    // .test('price', 'Prire must be a positive number', (value: any) => {
+    //   if (value) return /^[0-9]+(\.[0-9]*)?$/.test(value)
+    //   else return false
+    // })
+    // .test('price', 'Just allow decimal 18', (value: any) => {
+    //   if (value) return /^\d*(\.[0-9]{0,18})?$/.test(value)
+    //   else return false
+    // }),
   }),
   collectionOption: Yup.string().required('Collection is required'),
   title: Yup.string().required('Title is required'),
@@ -467,6 +466,15 @@ export default function CreateErc721({ NFT_STORAGE_API_KEY }: Props) {
                       </Box>
 
                       {/* Form input Title, Description, Royalties */}
+                      {/* <InputGroup title='Your Collection Address' note='Optional'>
+                        <Stack>
+                          <MyTextField
+                            variant='standard'
+                            name='address'
+                            placeholder='e.g. "0x000000000000000000000000000000000000000" '
+                          ></MyTextField>
+                        </Stack>
+                      </InputGroup> */}
                       <InputGroup title='Title'>
                         <Stack>
                           <MyTextField

@@ -1,15 +1,10 @@
-import { hooks } from '@/connectors/metaMask'
 import { truncateAddress } from '@/utils/convert'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
-import SearchIcon from '@mui/icons-material/Search'
 import {
   Avatar,
   Button,
   ButtonBase,
   Container,
   Divider,
-  IconButton,
-  InputBase,
   Link as MuiLink,
   ListItemIcon,
   Menu,
@@ -18,20 +13,17 @@ import {
   Typography,
 } from '@mui/material'
 
-import AccountBoxIcon from '@mui/icons-material/AccountBox'
+import { useAppDispatch } from '@/redux/hook'
+import { authActions } from '@/redux/slices/auth'
+import { StyledSvgIcon } from '@/styles/custome-mui'
+import { Icon } from '@/utils/images'
 import CollectionsIcon from '@mui/icons-material/Collections'
 import Logout from '@mui/icons-material/Logout'
 import { Box } from '@mui/system'
-import { ProfileContext } from 'context/profile-context'
+import { useWeb3React } from '@web3-react/core'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useContext, useState } from 'react'
-import { useWeb3React } from '@web3-react/core'
-import { getName } from 'pages/login/utils'
-import { StyledSvgIcon } from '@/styles/custome-mui'
-import { Icon } from '@/utils/images'
-import { useAppDispatch } from '@/redux/hook'
-import { authActions } from '@/redux/slices/auth'
+import { useState } from 'react'
 export interface IHeaderProps {}
 const navbar = [
   {
@@ -51,6 +43,12 @@ const navbar = [
     list: [],
     type: 'link',
     src: '/create',
+  },
+  {
+    name: 'Wallet',
+    list: [],
+    type: 'link',
+    src: '/wallet',
   },
 ]
 
@@ -81,7 +79,7 @@ export default function Header(props: IHeaderProps) {
         marginBottom: '25px',
       }}
     >
-      <Container maxWidth='xl'>
+      <Container maxWidth='lg'>
         <Stack
           direction='row'
           alignItems='center'
@@ -95,13 +93,13 @@ export default function Header(props: IHeaderProps) {
           }}
         >
           {/* Icon */}
-          <Link href='/' passHref>
+          {/* <Link href='/' passHref>
             <Box
               component='img'
               src='https://testnet.aioz.art/assets/images/logo-art.svg'
               sx={{ cursor: 'pointer' }}
             />
-          </Link>
+          </Link> */}
 
           {/* Search */}
           {/* <Box
@@ -149,7 +147,7 @@ export default function Header(props: IHeaderProps) {
           <Stack
             direction='row'
             sx={{
-              marginLeft: '50px',
+              // marginLeft: '50px',
               fontSize: '14px',
             }}
             alignItems='center'

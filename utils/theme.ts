@@ -1,16 +1,13 @@
+import { red } from '@mui/material/colors'
 import { createTheme } from '@mui/material/styles'
 import { ColorPartial } from '@mui/material/styles/createPalette'
-import { blue, purple, red } from '@mui/material/colors'
 import { switchClasses } from '@mui/material/Switch'
-import { autocompleteClasses } from '@mui/material/Autocomplete'
 
 import {
-  inputClasses,
-  selectClasses,
-  outlinedInputClasses,
-  inputAdornmentClasses,
-  typographyClasses,
   alpha,
+  inputAdornmentClasses,
+  inputClasses,
+  typographyClasses,
 } from '@mui/material'
 
 export const ColorTheme = {
@@ -73,6 +70,18 @@ declare module '@mui/material/Typography' {
 export const theme = createTheme({
   typography: {
     fontFamily: 'Rubik, sans-serif',
+    h5: {
+      fontSize: '12px',
+      lineHeight: '15px',
+      fontWeight: '700',
+      letterSpacing: '0.06em',
+    },
+    h4: {
+      fontSize: '14px',
+      lineHeight: '17px',
+      fontWeight: '700',
+      letterSpacing: '0.06em',
+    },
     h3: {
       fontSize: '16px',
       lineHeight: '19px',
@@ -80,7 +89,7 @@ export const theme = createTheme({
       letterSpacing: '0.06em',
     },
     h2: {
-      fontSize: '26px',
+      fontSize: '22px',
       lineHeight: '31px',
       fontWeight: '500',
       letterSpacing: '0.06em',

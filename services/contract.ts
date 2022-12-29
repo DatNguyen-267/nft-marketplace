@@ -1,5 +1,4 @@
-import { useWeb3React } from '@web3-react/core'
-import { ethers, ContractInterface } from 'ethers'
+import { ethers } from 'ethers'
 import { MARKETPLACE_ADDRESS, NETWORK } from '../constants'
 
 export const ContractService = {
@@ -18,9 +17,20 @@ export const ContractService = {
         abi ? abi : MARKETPLACE_ADDRESS
       )
       const balance = await contract.balanceOf(walletAddress)
-      return balance.toNumber()
+      return balance.toString()
     } catch (error) {
-      throw error
+      return '0'
+    }
+  },
+  async getBalanceNativeToken(account: string) {
+    try {
+      if (!account) return '0'
+      const provider = ContractService.getProvider()
+      const balance = await provider.getBalance(account)
+      console.log(balance.toString())
+      return balance.toString()
+    } catch (error) {
+      return '0'
     }
   },
 }

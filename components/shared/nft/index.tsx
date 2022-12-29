@@ -1,10 +1,7 @@
-import { NftData } from '@/models/nft'
-import { convertIpfsUrl } from '@/utils/convert'
 import { Box, Stack } from '@mui/material'
 import { NftApi } from 'apis/nft'
-import Link from 'next/link'
+import Image from 'next/image'
 import { ReactNode } from 'react'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 type Props = {
   isOwner?: boolean
@@ -37,14 +34,15 @@ const NftWrapper = ({
         border: '1px solid',
         borderRadius: '6px',
         borderColor: 'border.dark',
-        padding: '2px 0 12px 0',
+        padding: '0px 0 12px 0',
         height: ' 100%',
+        overflow: 'hidden',
       }}
     >
       <Stack>
         {/* Header */}
 
-        {header}
+        {/* {header} */}
         {/* Image */}
         <Box
           component='div'
@@ -64,7 +62,13 @@ const NftWrapper = ({
             },
           }}
         >
-          <Box
+          <Image
+            src={srcImg ? NftApi.getUrlImage(srcImg) : ''}
+            layout='fill'
+            objectFit='cover'
+            objectPosition='center'
+          ></Image>
+          {/* <Box
             component={LazyLoadImage}
             src={srcImg ? NftApi.getUrlImage(srcImg) : undefined}
             sx={{
@@ -77,7 +81,7 @@ const NftWrapper = ({
               objectPosition: 'center',
             }}
             effect='blur'
-          ></Box>
+          ></Box> */}
         </Box>
 
         {/* Footer */}

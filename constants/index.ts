@@ -7,7 +7,7 @@ export const PRIMARY_CURRENCY_NAME = 'AIOZ'
 // IPFS
 export const STORAGE_API_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDdDNDFFMWFDQkNjMTQ1RjlGMERFNDkzOTJEOGRhYzQ1OEE2Q2RlQTgiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY3MDAzOTMwOTcxNCwibmFtZSI6IndlYjNkZW1vIn0.vslPwefZ7tvTGDZoFDuX2Ca3PiP_egxNkVUpHaMYPUI'
-export const SUPPORT_IMG = ['.png', '.gif', '.jpg', '.jpeg']
+export const SUPPORT_IMG = ['.png', '.gif', '.jpg', '.jpeg', '.webp']
 
-export * from './address'
 export * from './abi'
+export * from './address'
