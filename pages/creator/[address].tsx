@@ -12,9 +12,7 @@ import { useWeb3React } from '@web3-react/core'
 import { NftApi } from 'apis'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
-import qs from 'qs'
 import { useEffect, useState } from 'react'
-import toast from 'react-hot-toast'
 
 const CreatorPage = () => {
   // State
@@ -26,6 +24,7 @@ const CreatorPage = () => {
   const [creatorAddress, setCreatorAddress] = useState<string>()
 
   const [notFoundCreator, setNotFoundCreator] = useState<boolean>(false)
+  const [selectedTokenId, setSelectedTokenId] = useState<string | null>(null)
 
   const handleOpenSellModal = () => setOpenModalSell(true)
   const handleCloseSellModal = () => setOpenModalSell(false)
@@ -34,9 +33,14 @@ const CreatorPage = () => {
   const { createAskOrder } = useMarketplace()
   useEffect(() => {
     if (router.isReady) {
+      console.log(router)
       if (router.query) {
         console.log(router.query.address?.toString())
         resetState()
+        if (router.query.address) setCreatorAddress(router.query.address as string)
+        else {
+          setNotFoundCreator(true)
+        }
       } else {
         setNotFoundCreator(true)
       }
@@ -124,6 +128,9 @@ const CreatorPage = () => {
     }
   }
   const handleSell = async (tokenId: string, price: string) => {
+    console.log('price', price)
+    console.log('tokenId', tokenId)
+
     if (tokenId && price) {
       try {
         const receitpSell = await createAskOrder(NFT_ADDRESS, tokenId, price)
@@ -175,12 +182,8 @@ const CreatorPage = () => {
                                   padding: 2,
                                 }}
                                 onClick={() => {
+                                  setSelectedTokenId(_.get(item, 'tokenId').toString())
                                   handleOpenSellModal()
-                                  // try {
-                                  //   handleSell(_.get(item, 'tokenId'))
-                                  // } catch (error) {
-                                  //   toast.error('Sell item fail!')
-                                  // }
                                 }}
                               >
                                 List Item
@@ -202,13 +205,6 @@ const CreatorPage = () => {
                           </>
                         )}
                       </NftWrapper>
-                      <ModalSellNft
-                        tokenId={_.get(item, 'tokenId').toString()}
-                        onSubmit={handleSell}
-                        open={openModalSell}
-                        handleCloseModal={handleCloseSellModal}
-                        handleOpenModal={handleOpenSellModal}
-                      ></ModalSellNft>
                     </Box>
                   </Grid>
                 )
@@ -216,6 +212,13 @@ const CreatorPage = () => {
           </Grid>
         </Container>
       )}
+      <ModalSellNft
+        tokenId={selectedTokenId}
+        onSubmit={handleSell}
+        open={openModalSell}
+        handleCloseModal={handleCloseSellModal}
+        handleOpenModal={handleOpenSellModal}
+      ></ModalSellNft>
     </>
   )
 }

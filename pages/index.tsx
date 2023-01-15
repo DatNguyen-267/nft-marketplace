@@ -99,41 +99,11 @@ const Home: NextPageWithLayout = () => {
             })
           )
           if (res) setSaleTokens([...res])
-
-          // let listTokenUri = listSaleToken.map(async (item, index) => {
-          //   if (item.tokenId) {
-          //     const tokenUri: any = await getTokenUri(item.tokenId)
-          //     console.log(tokenUri)
-          //     listSaleToken[index] = {
-          //       ...listSaleToken[index],
-          //       tokenUri,
-          //     }
-          //     const metadata = await NftApi.getMetadata(tokenUri)
-          //     listSaleToken[index] = {
-          //       ...listSaleToken[index],
-          //       metadata: { ...metadata },
-          //     }
-          //     setSaleTokens([...listSaleToken])
-          //     return listSaleToken[index]
-          //   }
-          // })
-
-          // setSaleTokens([...listSaleToken])
         }
       }
     } catch (error) {}
   }
-  // const handleBuy = async (tokenId?: number, price?: string) => {
-  //   if (tokenId && price) {
-  //     try {
-  //       await NftService.buyItem(tokenId, price, MARKETPLACE_ADDRESS)
-  //       toast.success('Buy item success')
-  //     } catch (error) {
-  //       console.log('buy fail', error)
-  //       toast.error('Buy item fail!')
-  //     }
-  //   }
-  // }
+
   const handleBuy = async (tokenId?: string, price?: string) => {
     if (tokenId && price) {
       try {
@@ -182,7 +152,7 @@ const Home: NextPageWithLayout = () => {
                           footer={
                             <PublicNftFooter
                               tokenUri={_.get(item, `tokenUri`)}
-                              tokenId={hexToNumber(_.get(item, 'tokenId'))?.toString()}
+                              tokenId={_.get(item, 'tokenId')?.toString()}
                               name={_.get(item, `metadata.name`)}
                               description={_.get(item, `metadata.description`)}
                               price={hexToNumber(

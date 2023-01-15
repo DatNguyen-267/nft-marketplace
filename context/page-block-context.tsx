@@ -65,8 +65,7 @@ const PageBlockContextWapper = ({ children }: Props) => {
       })
       .catch((promiseError) => {
         console.log('fail')
-        if (promiseError) toast.error(promiseError)
-        else if (error) toast.error(error)
+        if (error) toast.error(error)
         handleClose()
         setText(null)
       })

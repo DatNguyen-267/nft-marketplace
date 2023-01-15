@@ -75,7 +75,7 @@ type Props = {
   handleOpenModal: () => void
   open: boolean
   onSubmit: (tokenId: string, price: string) => Promise<any>
-  tokenId: string
+  tokenId?: string | null
 }
 const ModalSellNft = ({
   handleCloseModal,
@@ -86,6 +86,7 @@ const ModalSellNft = ({
 }: Props) => {
   const { isActive } = useWeb3React()
   const pageBlockContext = useContext(PageBlockContext)
+  console.log(tokenId)
   return (
     <Modal
       open={open}
@@ -139,19 +140,23 @@ const ModalSellNft = ({
           <Formik
             validationSchema={validationSchema}
             initialValues={initialValues}
-            onSubmit={(values) =>
-              pageBlockContext
-                ?.openPageBlock({
-                  func: onSubmit(tokenId, values.price),
-                  text: 'Listing...',
-                  success: 'List NFT success',
-                  error: 'List NFT error!',
-                })
-                .finally(() => {
-                  console.log('close')
-                  handleCloseModal()
-                })
-            }
+            onSubmit={(values) => {
+              if (tokenId) {
+                pageBlockContext
+                  ?.openPageBlock({
+                    func: onSubmit(tokenId, values.price),
+                    text: 'Listing...',
+                    success: 'List NFT success',
+                    error: 'List NFT error!',
+                  })
+                  .finally(() => {
+                    console.log('close')
+                    handleCloseModal()
+                  })
+              } else {
+                toast.error('Invalid input')
+              }
+            }}
           >
             {({ values, setFieldValue }) => (
               <Form autoComplete='off'>

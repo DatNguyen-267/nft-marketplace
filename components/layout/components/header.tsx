@@ -200,10 +200,7 @@ export default function Header(props: IHeaderProps) {
                 </Button>
               </Stack>
             ) : (
-              <Link
-                href={`/login?from=${router.asPath.slice(1, router.asPath.length)}`}
-                passHref
-              >
+              <Link href={`/login`} passHref>
                 <Button
                   variant='text'
                   sx={{

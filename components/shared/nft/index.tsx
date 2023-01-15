@@ -1,7 +1,7 @@
-import { Box, Stack } from '@mui/material'
+import { Box, Skeleton, Stack } from '@mui/material'
 import { NftApi } from 'apis/nft'
 import Image from 'next/image'
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 
 type Props = {
   isOwner?: boolean
@@ -28,6 +28,7 @@ const NftWrapper = ({
   price,
   children,
 }: Props) => {
+  const [fetchImgError, setFetchImgError] = useState<any>(null)
   return (
     <Stack
       justifyContent='space-between'
@@ -41,10 +42,6 @@ const NftWrapper = ({
       }}
     >
       <Stack>
-        {/* Header */}
-
-        {/* {header} */}
-        {/* Image */}
         <Box
           component='div'
           sx={{
@@ -68,21 +65,23 @@ const NftWrapper = ({
             layout='fill'
             objectFit='cover'
             objectPosition='center'
+            onError={(err) => setFetchImgError(err)}
+            onLoadingComplete={() => setFetchImgError(null)}
           ></Image>
-          {/* <Box
-            component={LazyLoadImage}
-            src={srcImg ? NftApi.getUrlImage(srcImg) : undefined}
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center',
-            }}
-            effect='blur'
-          ></Box> */}
+          {fetchImgError && (
+            <Skeleton
+              variant='rectangular'
+              animation='wave'
+              sx={{
+                zIndex: '999',
+                position: 'absolute',
+                left: 0,
+                right: 0,
+                bottom: 0,
+                height: '100%',
+              }}
+            />
+          )}
         </Box>
 
         {/* Footer */}
