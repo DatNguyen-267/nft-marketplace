@@ -14,9 +14,17 @@ import _ from 'lodash'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import Loading from '../components/shared/modal/loading'
-import { NFT_ADDRESS } from '../constants'
+import {
+  MARKETPLACE_ABI,
+  MARKETPLACE_ADDRESS,
+  NFT_ABI,
+  NFT_ADDRESS,
+  WBNB_ABI,
+  wBNB_ADDRESS,
+} from '../constants'
 import { PageBlockContext } from '../context/page-block-context'
 import { NextPageWithLayout } from './_app'
+import { ContractService } from '../services'
 const Loading2 = Icon.Loading2
 export type HomeTag = Tag | 'All'
 const HOMETAGS: HomeTag[] = ['All', ...TAGS]
@@ -49,7 +57,6 @@ const Home: NextPageWithLayout = () => {
   const { viewAsksByCollection, buyTokenUsingWBNB } = useMarketplace()
 
   const pageBlockContext = useContext(PageBlockContext)
-
   useEffect(() => {
     getsaleTokens()
   }, [])
